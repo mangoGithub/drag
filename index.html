@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>无标题文档</title>
+</head>
+<style>
+	.drag{width:100px; height:100px; background:red; position:absolute;}
+</style>
+<body>
+	<div class="drag"></div>
+</body>
+</html>
+<script src="jquery-min.js"></script>
+<script>
+$.fn.extend({
+	draw :function(options){
+		var defaults ={
+				
+		};
+		var options = $.extend(defaults,options);
+		return this.each(function(){
+			var obj = $(this);
+			obj.mousedown(function(ev){
+				var disX = ev.clientX - obj.offset().left;
+				var disY = ev.clientY - obj.offset().top;
+				$(document).mousemove(function(ev){
+					obj.css({
+						left : ev.clientX - disX,
+						top : ev.clientY - disY
+					});
+				});
+				$(document).on('mouseup', function() {
+					$(document).off('mousemove mouseup');
+				});
+				ev.preventDefault();
+			})	
+		});
+	}
+})
+$(function(){
+	$('.drag').draw();
+})
+</script>
